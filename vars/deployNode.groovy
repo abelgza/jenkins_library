@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(String branch = "dev", String port= "Undefined", String project_name= "Undefined", String git_test_project=NULL) {
+def call(String branch = "dev", String port= "Undefined", String project_name= "Undefined", String git_test_project="dev") {
       try {
       stage ("Inicio ${branch}") {
         echo "Se inicia proceso en ${branch}, puerto ${port}"
@@ -26,7 +26,7 @@ def call(String branch = "dev", String port= "Undefined", String project_name= "
       bat label: "Se genera el ZIP de la evidencia", script: "jar -cMf ${project_name}_evidencia.zip pruebas"
       } catch (Exception err) {
         echo "Hubo errores, se realiza Rollback"
-        bat label:" Rollback y se elimina de pm2", script:"pm2 delete dev_project"
+        bat label:" Rollback y se elimina de pm2", script:"pm2 delete ${branch}_${project_name}"
         currentBuild.result = "FAILURE"
       }
 }
